@@ -10,6 +10,7 @@ class EstadisticasRepository:
     terminos = {}
     documentos = []
     fileNameTerminos = 'results/estadisticas.txt'
+    fileNameFrecuentes = 'results/masmenosfrecuentes.txt'
 
     def __init__(self):
         pass
@@ -69,8 +70,42 @@ class EstadisticasRepository:
             archivo.write(u'Tokens ='+str(cantidadTokensDocumentoLargo)+'\n')
             archivo.write(u'Términos ='+str(cantidadTerminosDocumentoLargo)+'\n')
 
+        responseMenos = self.terminos_menos_frecuentes(self.terminos)
+        responseMas = self.terminos_mas_frecuentes(self.terminos)
+        with codecs.open(self.fileNameFrecuentes, mode="w", encoding="utf-8") as archivo:
+            archivo.write(u'MENOS FRECUENTES\n')
+            archivo.write(u'='*50+'\n')
+            for termino in responseMenos:
+                archivo.write(termino.label.ljust(30))
+                archivo.write('|')
+                archivo.write(str(termino.CF).ljust(6))
+                archivo.write('\n')
+            archivo.write('\n')
+            archivo.write(u'MÁS FRECUENTES\n')
+            archivo.write(u'='*50+'\n')
+            for termino in responseMas:
+                archivo.write(termino.label.ljust(30))
+                archivo.write('|')
+                archivo.write(str(termino.CF).ljust(6))
+                archivo.write('\n')
+
     def orderDocumentos(self,item):
         return item.tamanio
+
+
+    def terminos_menos_frecuentes(self,terminos):
+        listaAux = sorted(terminos.keys(), key=lambda x: (terminos[x].CF))[:10]
+        response = []
+        for termino in listaAux:
+            response.append(terminos[termino])
+        return response
+
+    def terminos_mas_frecuentes(self,terminos):
+        listaAux = sorted(terminos.keys(), key=lambda x: (terminos[x].CF), reverse=True)[:10]
+        response = []
+        for termino in listaAux:
+            response.append(terminos[termino])
+        return response
 
             
                 
