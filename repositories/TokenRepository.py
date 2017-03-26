@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import codecs
+import sys
 from models.LimpiarHtmlTagsRegla import *
 from models.MinusculasRegla import *
 from models.TranslateRegla import *
@@ -35,6 +36,7 @@ class TokenRepository:
         pathVacias = options.get('pathVacias', None)
 
         if pathVacias != None :
+            print u"ANALIZANDO PALABRAS VACIAS"
             with codecs.open(pathVacias, mode='rt', encoding='utf-8') as vacias:
                 content = vacias.read()
                 for regla in self.reglasDocumento:
@@ -47,6 +49,8 @@ class TokenRepository:
                         self.lista_vacias.append(palabra)
 
         # Procesamos cada documento
+        indexDocumento = 0
+        cantidadDocumentos = len(documentos)
         for documento in documentos:
             content = documento.content
             # Aplicamos cada regla definida en self.reglasDocumento para normalizar
@@ -71,7 +75,12 @@ class TokenRepository:
 
             terminosAux = self.getTerminos(tokensAux,documento)
             documento.terminos = terminosAux
+            indexDocumento += 1
+            porcentaje = (indexDocumento * 100) / cantidadDocumentos
+            sys.stdout.write(u"\r"+str(int(porcentaje)).ljust(3)+"% "+u"\u2588"*int(porcentaje))
+            sys.stdout.flush()
 
+        print '\n'
         self.saveTerminos()
         # Armamos la respuesta
         response = {}
