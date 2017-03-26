@@ -1,0 +1,18 @@
+GENERAL
+==================================================
+Documentos =1
+Tokens totales =5
+Términos totales =2
+Tokens promedio =5
+Términos promedio =2
+Términos una sola aparición =2
+
+DOCUMENTO CORTO
+==================================================
+Tokens =5
+Términos =2
+
+DOCUMENTO LARGO
+==================================================
+Tokens =5
+Términos =2
