@@ -22,12 +22,12 @@ class CorpusRepository:
 
     def getFullStringFromDocument(self,documentName):
         filePath = join(self.path,documentName)
-        with codecs.open(filePath, mode='rt', encoding='utf-8') as fp:
+        with codecs.open(filePath, mode='rt', encoding='utf-8',errors='ignore') as fp:
             return fp.read()
         return None
 
     def getDocument(self,documentName):
         filePath = join(self.path,documentName)
-        with codecs.open(filePath, mode='rt', encoding='utf-8') as fp:
+        with codecs.open(filePath, mode='rt', encoding='utf-8',errors='ignore') as fp:
             return Documento(documentName,fp.read())
         return None
