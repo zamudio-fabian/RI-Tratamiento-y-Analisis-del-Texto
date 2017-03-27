@@ -30,6 +30,7 @@ class TokenRepository:
     stemmer = None
 
     def __init__(self):
+
         self.reglasEntities.append(EmailRegla())
         self.reglasEntities.append(UrlRegla())
         self.reglasEntities.append(FechasRegla())
@@ -108,6 +109,7 @@ class TokenRepository:
             self.saveTerminosGlobal(documento)
             indexDocumento += 1
             porcentaje = (indexDocumento * 100) / cantidadDocumentos
+
             sys.stdout.write(u"\r"+str(int(porcentaje)).ljust(3)+u"% \u258F"+(u"\u2588"*int(porcentaje / 2)).ljust(50)+u"\u2595")
             sys.stdout.flush()
 

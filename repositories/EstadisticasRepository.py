@@ -93,7 +93,6 @@ class EstadisticasRepository:
     def orderDocumentos(self,item):
         return item.tamanio
 
-
     def terminos_menos_frecuentes(self,terminos):
         listaAux = sorted(terminos.keys(), key=lambda x: (terminos[x]['CF']))[:10]
         response = {}
@@ -107,6 +106,3 @@ class EstadisticasRepository:
         for termino in listaAux:
             response[termino] = terminos[termino]["CF"]
         return sorted(response.items(), key=operator.itemgetter(1), reverse=True)
-
-            
-                
