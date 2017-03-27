@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import codecs
 import sys
+from nltk.stem.snowball import SpanishStemmer
 from models.LimpiarHtmlTagsRegla import *
 from models.FechasRegla import *
 from models.TelefonosRegla import *
@@ -26,6 +27,7 @@ class TokenRepository:
     documentos = []
     fileNameTerminos = "results/terminos.txt"
     lista_vacias = []
+    stemmer = None
 
     def __init__(self):
         self.reglasEntities.append(EmailRegla())
@@ -40,6 +42,7 @@ class TokenRepository:
         self.reglasDocumento.append(LimpiarHtmlTagsRegla())
         self.reglasDocumento.append(LimpiadoBasicoRegla())
         self.reglasTokens.append(MinMaxCaracteresRegla())
+        self.stemmer = SpanishStemmer()
 
     def tokenizar(self,documentos, **options):
         # INIT
@@ -49,11 +52,6 @@ class TokenRepository:
         self.lista_vacias = []
         pathVacias = options.get('pathVacias', None)
         tokensEntities = []
-
-        # INIT archivos de reglas
-        for instancia in self.reglasEntities:
-            with codecs.open(instancia.filename, mode="w", encoding="utf-8") as archivo:
-                archivo.write(u"")
 
         if pathVacias != None :
             print u"ANALIZANDO PALABRAS VACIAS"
@@ -81,12 +79,6 @@ class TokenRepository:
                 # Agregamos los terminos a los del documento
                 documento.terminos.update(response['terminos'])
                 tokensEntities += response['tokens']
-                with codecs.open(instancia.filename, mode="a", encoding="utf-8") as archivo:
-                    archivo.write('DOCUMENTO='+documento.filename+'\n')
-                    archivo.write(u'='*50+'\n')
-                    for termino in response['terminos']:
-                        archivo.write(termino+'\n')
-                    archivo.write('\n')
 
 
             # Aplicamos cada regla definida en self.reglasDocumento para normalizar
@@ -107,8 +99,12 @@ class TokenRepository:
                     if token in self.lista_vacias:
                         tokensAux.remove(token)
 
+            # Aplicamos Stemming excepto entidades
+            tokensAux = self.stemmizar(tokensAux)
+
             terminosAux = self.getTerminos(tokensAux)
             documento.terminos.update(terminosAux)
+
             self.saveTerminosGlobal(documento)
             indexDocumento += 1
             porcentaje = (indexDocumento * 100) / cantidadDocumentos
@@ -138,6 +134,12 @@ class TokenRepository:
             else:
                 terminos[token]['CF'] += 1
         return terminos
+
+    def stemmizar(self,tokens):
+        tokensAux = []
+        for token in tokens:
+            tokensAux.append(self.stemmer.stem(token))
+        return tokensAux
 
     def saveTerminosGlobal(self,documento):
         terminos = {}
