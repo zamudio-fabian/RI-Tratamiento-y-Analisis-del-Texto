@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import codecs
+import operator
 from models.Termino import *
 from models.Documento import *
 
@@ -76,36 +77,32 @@ class EstadisticasRepository:
             archivo.write(u'MENOS FRECUENTES\n')
             archivo.write(u'='*50+'\n')
             for termino in responseMenos:
-                archivo.write(termino.ljust(30))
+                archivo.write(termino[0].ljust(30))
                 archivo.write('|')
-                archivo.write(str(responseMenos[termino]).ljust(6))
+                archivo.write(str(termino[1]).ljust(6))
                 archivo.write('\n')
             archivo.write('\n')
             archivo.write(u'MÁS FRECUENTES\n')
             archivo.write(u'='*50+'\n')
             for termino in responseMas:
-                archivo.write(termino.ljust(30))
+                archivo.write(termino[0].ljust(30))
                 archivo.write('|')
-                archivo.write(str(responseMas[termino]).ljust(6))
+                archivo.write(str(termino[1]).ljust(6))
                 archivo.write('\n')
 
     def orderDocumentos(self,item):
         return item.tamanio
-
 
     def terminos_menos_frecuentes(self,terminos):
         listaAux = sorted(terminos.keys(), key=lambda x: (terminos[x]['CF']))[:10]
         response = {}
         for termino in listaAux:
             response[termino] = terminos[termino]["CF"]
-        return response
+        return sorted(response.items(), key=operator.itemgetter(1))
 
     def terminos_mas_frecuentes(self,terminos):
         listaAux = sorted(terminos.keys(), key=lambda x: (terminos[x]['CF']), reverse=True)[:10]
         response = {}
         for termino in listaAux:
             response[termino] = terminos[termino]["CF"]
-        return response
-
-            
-                
+        return sorted(response.items(), key=operator.itemgetter(1), reverse=True)
