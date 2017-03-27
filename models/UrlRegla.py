@@ -3,13 +3,13 @@
 import re
 from models.Regla import *
 
-class AbreviaturasRegla(Regla):
+class UrlRegla(Regla):
 
     regex = None
-    filename = 'results/abreviaturas.txt'
+    filename = 'results/urls.txt'
 
     def __init__(self):
-        self.regex = re.compile(u"([A-Z])+\.([A-Z])+\.([A-Z]+\.)*|(?:[A-Z][a-z]{1,2}\.)|([A-Z][a-z]+\.)+")
+        self.regex = re.compile(u"http[s]?:\/\/(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+|((www\.[a-zA-Z0-9]+)|localhost)\.[a-zA-Z\.]+")
         
     def run(self,content):
         terminos = {}

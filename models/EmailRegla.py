@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import re
+import codecs
 from models.Regla import *
 
-class AbreviaturasRegla(Regla):
+class EmailRegla(Regla):
 
     regex = None
-    filename = 'results/abreviaturas.txt'
+    filename = 'results/emails.txt'
 
     def __init__(self):
-        self.regex = re.compile(u"([A-Z])+\.([A-Z])+\.([A-Z]+\.)*|(?:[A-Z][a-z]{1,2}\.)|([A-Z][a-z]+\.)+")
-        
+        self.regex = re.compile(r"(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*)@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])")
+
     def run(self,content):
         terminos = {}
         tokens = []

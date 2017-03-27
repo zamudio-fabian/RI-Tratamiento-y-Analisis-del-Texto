@@ -7,7 +7,7 @@ class Documento:
     content = ''
     tamanio = 0
     tokens = []
-    terminos = []
+    terminos = {}
 
     def __init__(self,filename,content):
         self.filename = filename

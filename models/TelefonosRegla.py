@@ -3,13 +3,13 @@
 import re
 from models.Regla import *
 
-class AbreviaturasRegla(Regla):
+class TelefonosRegla(Regla):
 
     regex = None
-    filename = 'results/abreviaturas.txt'
+    filename = 'results/telefonos.txt'
 
     def __init__(self):
-        self.regex = re.compile(u"([A-Z])+\.([A-Z])+\.([A-Z]+\.)*|(?:[A-Z][a-z]{1,2}\.)|([A-Z][a-z]+\.)+")
+        self.regex = re.compile(u"(?<=\s|:)\(?(?:(0?[1-3]\d{1,2})\)?(?:\s|-)?)?((?:\d[\d-]{5}|15[\s\d-]{7})\d+)|\+\d{2,2}\d{9,11}")
         
     def run(self,content):
         terminos = {}
