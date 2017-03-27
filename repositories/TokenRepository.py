@@ -81,7 +81,7 @@ class TokenRepository:
             documento.terminos = terminosAux
             indexDocumento += 1
             porcentaje = (indexDocumento * 100) / cantidadDocumentos
-            sys.stdout.write(u"\r"+str(int(porcentaje)).ljust(3)+"% "+u"\u2588"*int(porcentaje))
+            sys.stdout.write(u"\r"+str(int(porcentaje)).ljust(3)+u"% \u258F"+(u"\u2588"*int(porcentaje / 2)).ljust(50)+u"\u2595")
             sys.stdout.flush()
 
         print '\n'
