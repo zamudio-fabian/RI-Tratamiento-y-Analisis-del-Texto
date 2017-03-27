@@ -5,16 +5,15 @@ from models.Regla import *
 
 class MinMaxCaracteresRegla(Regla):
 
-    tokens = ""
     minCarac = 3
     maxCarac = 20
 
-    def __init__(self,tokens):
-        self.tokens = tokens
+    def __init__(self):
+        pass
         
-    def run(self):
+    def run(self,tokens):
         tokensAux = []
-        for token in self.tokens:
+        for token in tokens:
             if len(token) >= self.minCarac and len(token) <= self.maxCarac :
                 tokensAux.append(token)
         return tokensAux

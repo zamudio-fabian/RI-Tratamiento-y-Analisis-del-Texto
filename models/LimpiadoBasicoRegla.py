@@ -5,12 +5,13 @@ from models.Regla import *
 
 class LimpiadoBasicoRegla(Regla):
 
-    content = ""
-    def __init__(self,content):
-        self.content = content
+    regex = None
+
+    def __init__(self):
+        self.regex = re.compile(u"[^a-z0-9\s]")
         
-    def run(self):
-        content = re.sub(u"[^a-z0-9\s]", "", self.content)
+    def run(self,content):
+        content = self.regex.sub(" ", content)
         return content
 
     

@@ -40,8 +40,8 @@ class EstadisticasRepository:
 
         acumuladoLargoTermino = 0
         for termino in self.terminos:
-            acumuladoLargoTermino += len(self.terminos[termino].label)
-            if (self.terminos[termino].CF == 1):
+            acumuladoLargoTermino += len(termino)
+            if (self.terminos[termino]['CF'] == 1):
                 terminosUnaAparicion += 1
 
         documentoCorto = self.documentos[0]
@@ -61,11 +61,11 @@ class EstadisticasRepository:
             archivo.write(u'Tokens promedio ='+str(promedioTokens)+'\n')
             archivo.write(u'Términos promedio ='+str(promedioTerminos)+'\n')
             archivo.write(u'Términos una sola aparición ='+str(terminosUnaAparicion)+'\n')
-            archivo.write(u'\nDOCUMENTO CORTO\n')
+            archivo.write(u'\nDOCUMENTO CORTO '+documentoCorto.filename+'\n')
             archivo.write(u'='*50+'\n')
             archivo.write(u'Tokens ='+str(cantidadTokensDocumentoCorto)+'\n')
             archivo.write(u'Términos ='+str(cantidadTerminosDocumentoCorto)+'\n')
-            archivo.write(u'\nDOCUMENTO LARGO\n')
+            archivo.write(u'\nDOCUMENTO LARGO '+documentoLargo.filename+'\n')
             archivo.write(u'='*50+'\n')
             archivo.write(u'Tokens ='+str(cantidadTokensDocumentoLargo)+'\n')
             archivo.write(u'Términos ='+str(cantidadTerminosDocumentoLargo)+'\n')
@@ -76,17 +76,17 @@ class EstadisticasRepository:
             archivo.write(u'MENOS FRECUENTES\n')
             archivo.write(u'='*50+'\n')
             for termino in responseMenos:
-                archivo.write(termino.label.ljust(30))
+                archivo.write(termino.ljust(30))
                 archivo.write('|')
-                archivo.write(str(termino.CF).ljust(6))
+                archivo.write(str(responseMenos[termino]).ljust(6))
                 archivo.write('\n')
             archivo.write('\n')
             archivo.write(u'MÁS FRECUENTES\n')
             archivo.write(u'='*50+'\n')
             for termino in responseMas:
-                archivo.write(termino.label.ljust(30))
+                archivo.write(termino.ljust(30))
                 archivo.write('|')
-                archivo.write(str(termino.CF).ljust(6))
+                archivo.write(str(responseMas[termino]).ljust(6))
                 archivo.write('\n')
 
     def orderDocumentos(self,item):
@@ -94,17 +94,17 @@ class EstadisticasRepository:
 
 
     def terminos_menos_frecuentes(self,terminos):
-        listaAux = sorted(terminos.keys(), key=lambda x: (terminos[x].CF))[:10]
-        response = []
+        listaAux = sorted(terminos.keys(), key=lambda x: (terminos[x]['CF']))[:10]
+        response = {}
         for termino in listaAux:
-            response.append(terminos[termino])
+            response[termino] = terminos[termino]["CF"]
         return response
 
     def terminos_mas_frecuentes(self,terminos):
-        listaAux = sorted(terminos.keys(), key=lambda x: (terminos[x].CF), reverse=True)[:10]
-        response = []
+        listaAux = sorted(terminos.keys(), key=lambda x: (terminos[x]['CF']), reverse=True)[:10]
+        response = {}
         for termino in listaAux:
-            response.append(terminos[termino])
+            response[termino] = terminos[termino]["CF"]
         return response
 
             
