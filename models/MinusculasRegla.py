@@ -4,12 +4,10 @@ from models.Regla import *
 
 class MinusculasRegla(Regla):
 
-    content = ""
-
-    def __init__(self,content):
-        self.content = content
+    def __init__(self):
+        pass
         
-    def run(self):
-        content = self.content.lower();
+    def run(self,content):
+        content = content.lower();
         return content
         

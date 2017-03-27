@@ -7,7 +7,7 @@ from models.MinusculasRegla import *
 from models.TranslateRegla import *
 from models.LimpiadoBasicoRegla import *
 from models.MinMaxCaracteresRegla import *
-from models.Termino import *
+from models.AbreviaturasRegla import *
 from models.Documento import *
 
 class TokenRepository:
@@ -16,16 +16,18 @@ class TokenRepository:
     tokens = []
     reglasDocumento = []
     reglasTokens = []
+    reglasEntities = []
     documentos = []
     fileNameTerminos = "results/terminos.txt"
     lista_vacias = []
 
     def __init__(self):
-        self.reglasDocumento.append('MinusculasRegla')
-        self.reglasDocumento.append('TranslateRegla')
-        self.reglasDocumento.append('LimpiarHtmlTagsRegla')
-        self.reglasDocumento.append('LimpiadoBasicoRegla')
-        self.reglasTokens.append('MinMaxCaracteresRegla')
+        # self.reglasEntities.append(AbreviaturasRegla())
+        self.reglasDocumento.append(MinusculasRegla())
+        self.reglasDocumento.append(TranslateRegla())
+        self.reglasDocumento.append(LimpiarHtmlTagsRegla())
+        self.reglasDocumento.append(LimpiadoBasicoRegla())
+        self.reglasTokens.append(MinMaxCaracteresRegla())
 
     def tokenizar(self,documentos, **options):
         # INIT
@@ -39,9 +41,8 @@ class TokenRepository:
             print u"ANALIZANDO PALABRAS VACIAS"
             with codecs.open(pathVacias, mode='rt', encoding='utf-8') as vacias:
                 content = vacias.read()
-                for regla in self.reglasDocumento:
-                    instancia = globals()[regla](content)
-                    content = instancia.run()
+                for instancia in self.reglasDocumento:
+                    content = instancia.run(content)
 
                 palabras = content.strip().split()
                 for palabra in palabras:
@@ -54,18 +55,16 @@ class TokenRepository:
         for documento in documentos:
             content = documento.content
             # Aplicamos cada regla definida en self.reglasDocumento para normalizar
-            for regla in self.reglasDocumento:
-                instancia = globals()[regla](content)
-                content = instancia.run()
+            for instancia in self.reglasDocumento:
+                content = instancia.run(content)
             # Sacamos tokens de documentos
             tokensAux = self.getTokens(content)
             self.tokens = self.tokens + tokensAux
             documento.tokens = tokensAux
 
             # Aplicamos cada regla definida en self.reglasTokens
-            for regla in self.reglasTokens:
-                instancia = globals()[regla](tokensAux)
-                tokensAux = instancia.run()
+            for instancia in self.reglasTokens:
+                tokensAux = instancia.run(tokensAux)
 
             # Sacamos palabras vacias
             if pathVacias != None :
@@ -98,18 +97,19 @@ class TokenRepository:
         terminos = {}
         for token in tokens:
             if token not in terminos:
-                terminos[token] = Termino(token,1,documento)
+                terminos[token] = {}
+                terminos[token]['CF'] = 1
             else:
-                termino = terminos[token]
-                termino.addCf()
-                termino.addDoc(documento)
+                terminos[token]['CF'] += 1
                 
             if token not in self.terminos:
-                self.terminos[token] = Termino(token,1,documento)
+                self.terminos[token] = {}
+                self.terminos[token]['CF'] = 1
+                self.terminos[token]['DOCS'] = [documento]
             else:
-                termino = self.terminos[token]
-                termino.addCf()
-                termino.addDoc(documento)
+                self.terminos[token]['CF'] += 1
+                if documento not in self.terminos[token]["DOCS"]:
+                    self.terminos[token]["DOCS"].append(documento)
         return terminos
 
     def saveTerminos(self):
@@ -128,10 +128,10 @@ class TokenRepository:
             for termino in sorted(self.terminos.keys()):
                 archivo.write(str(index).ljust(6))
                 archivo.write('|')
-                archivo.write(self.terminos[termino].label.ljust(30))
+                archivo.write(termino.ljust(30))
                 archivo.write('|')
-                archivo.write(str(self.terminos[termino].CF).ljust(6))
+                archivo.write(str(self.terminos[termino]['CF']).ljust(6))
                 archivo.write('|')
-                archivo.write(str(len(self.terminos[termino].DOCS)).ljust(6))
+                archivo.write(str(len(self.terminos[termino]['DOCS'])).ljust(6))
                 archivo.write('\n')
                 index += 1

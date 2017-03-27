@@ -3,14 +3,12 @@
 from models.Regla import *
 
 class TranslateRegla(Regla):
- 
-    content = ""
 
-    def __init__(self,content):
-        self.content = content
+    def __init__(self):
+        pass
         
-    def run(self):
-        content = self.translate(self.content)
+    def run(self,content):
+        content = self.translate(content)
         return content
 
     def translate(self,to_translate):

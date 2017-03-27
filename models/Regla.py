@@ -5,8 +5,8 @@ class Regla:
 
     tokens = []
 
-    def __init__(self,tokens):
-        self.tokens = tokens
-        
-    def run(self):
+    def __init__(self):
+        pass
+    
+    def run(self,tokens):
         sys.exit(-1)

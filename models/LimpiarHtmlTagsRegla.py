@@ -5,14 +5,16 @@ from models.Regla import *
 
 class LimpiarHtmlTagsRegla(Regla):
 
-    content = ""
+    regexEntity = None
+    regexTag = None
 
-    def __init__(self,content):
-        self.content = content
+    def __init__(self):
+        self.regexTag = re.compile(u"<(.|\n)*?>")
+        self.regexEntity = re.compile(u"&[a-z]*;")
         
-    def run(self):
+    def run(self,content):
         # Eliminamos tags básicos de ej: <img ... />
-        content = re.sub(u"<(.|\n)*?>", "", self.content)
-        # # Eliminamos entities de HTML ej: &quote;
-        content = re.sub(u"&[a-z]*;", "", content)
+        content = self.regexTag.sub(" ", content)
+        # Eliminamos entities de HTML ej: &quote;
+        content = self.regexEntity.sub(" ", content)
         return content
