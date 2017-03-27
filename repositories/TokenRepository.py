@@ -22,7 +22,6 @@ class TokenRepository:
     lista_vacias = []
 
     def __init__(self):
-        # self.reglasEntities.append(AbreviaturasRegla())
         self.reglasDocumento.append(MinusculasRegla())
         self.reglasDocumento.append(TranslateRegla())
         self.reglasDocumento.append(LimpiarHtmlTagsRegla())
@@ -86,7 +85,7 @@ class TokenRepository:
         response['terminos'] = self.terminos
         response['tokens'] = self.tokens
         response['documentos'] = documentos
-        return response
+        return respons
 
     def getTokens(self,string):
         content = string.strip().split()
