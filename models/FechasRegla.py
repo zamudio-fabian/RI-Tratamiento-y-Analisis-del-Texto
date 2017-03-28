@@ -9,7 +9,7 @@ class FechasRegla(Regla):
     filename = 'results/fechas.txt'
 
     def __init__(self):
-        self.regex = re.compile(u"(\d{1,2})[\/|-](\d{1,2})[\/|-](\d{1,4})|(\d{1,4})[\/|-](\d{1,2})[\/|-](\d{1,2})")
+        self.regex = re.compile(u"(\d{1,2})[\/|-](\d{1,2})[\/|-](\d{1,4})|(\d{1,4})[\/|-](\d{1,2})[\/|-](\d{1,2})|[12]\d{3}-[12]\d{3}")
         
     def run(self,content):
         terminos = {}
