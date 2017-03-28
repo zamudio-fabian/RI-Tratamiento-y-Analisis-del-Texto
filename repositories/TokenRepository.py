@@ -28,6 +28,8 @@ class TokenRepository:
     fileNameTerminos = "results/terminos.txt"
     lista_vacias = []
     stemmer = None
+    lista_terminos_unicos = []
+    lista_terminos_procesados = []
 
     def __init__(self):
 
@@ -120,6 +122,8 @@ class TokenRepository:
         response['terminos'] = self.terminos
         response['tokens'] = self.tokens
         response['documentos'] = documentos
+        response['terminos_unicos'] = self.lista_terminos_unicos
+        response['terminos_procesados'] = self.lista_terminos_procesados
         return response
 
     def getTokens(self,string):
@@ -128,13 +132,30 @@ class TokenRepository:
         return content
 
     def getTerminos(self,tokens):
+        # Inicialización de variables
+        if len(self.lista_terminos_unicos) > 0:
+            lastTerminosUnicos = self.lista_terminos_unicos[-1]
+            lastTerminosProcesados = self.lista_terminos_procesados[-1]
+        else:
+            lastTerminosUnicos = 0
+            lastTerminosProcesados = 0
+
         terminos = {}
         for token in tokens:
+            # Por cada termino aumentamos la cantidad de términos procesados
+            lastTerminosProcesados += 1
+            self.lista_terminos_procesados.append(lastTerminosProcesados)
+
             if token not in terminos:
                 terminos[token] = {}
                 terminos[token]['CF'] = 1
+                # Si no esta en los terminos generales aumento la cantidad de términos únicos
+                lastTerminosUnicos += 1
+                self.lista_terminos_unicos.append(lastTerminosUnicos)
             else:
                 terminos[token]['CF'] += 1
+                # Si esta en los terminos generales mantengo la cantidad de términos únicos
+                self.lista_terminos_unicos.append(lastTerminosUnicos)
         return terminos
 
     def stemmizar(self,tokens):
@@ -144,26 +165,44 @@ class TokenRepository:
         return tokensAux
 
     def saveTerminosGlobal(self,documento):
-        terminos = {}
         for termino in documento.terminos:
+
             if termino not in self.terminos:
                 self.terminos[termino] = {}
                 self.terminos[termino]['CF'] = documento.terminos[termino]['CF']
                 self.terminos[termino]['DOCS'] = [documento]
+
+                
             else:
+                
                 self.terminos[termino]['CF'] += 1
                 if documento not in self.terminos[termino]["DOCS"]:
                     self.terminos[termino]["DOCS"].append(documento)
 
-    def saveTerminos(tokens,documento):
-        if token not in self.terminos:
-            self.terminos[token] = {}
-            self.terminos[token]['CF'] = 1
-            self.terminos[token]['DOCS'] = [documento]
-        else:
-            self.terminos[token]['CF'] += 1
-            if documento not in self.terminos[token]["DOCS"]:
-                self.terminos[token]["DOCS"].append(documento)
+    # def saveTerminos(tokens,documento):
+    #     if len(lista_terminos_unicos) > 0:
+    #         lastTerminosUnicos = self.lista_terminos_unicos[-1]
+    #         lastTerminosProcesados = self.lista_terminos_procesados[-1]
+    #     else:
+    #         lastTerminosUnicos = 0
+    #         lastTerminosProcesados = 0
+
+    #     lastTerminosProcesados += 1
+    #     self.lista_terminos_procesados.append(lastTerminosProcesados)
+        
+    #     if token not in self.terminos:
+    #         self.terminos[token] = {}
+    #         self.terminos[token]['CF'] = 1
+    #         self.terminos[token]['DOCS'] = [documento]
+
+    #         lastTerminosUnicos += 1
+    #         self.lista_terminos_procesados.append(lastTerminosUnicos)
+    #     else:
+    #         self.lista_terminos_procesados.append(lastTerminosUnicos)
+    #         self.terminos[token]['CF'] += 1
+    #         if documento not in self.terminos[token]["DOCS"]:
+    #             self.terminos[token]["DOCS"].append(documento)
+
 
     def saveTerminosFile(self):
         with codecs.open(self.fileNameTerminos, mode="w", encoding="utf-8") as archivo:
