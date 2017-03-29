@@ -48,7 +48,6 @@ class TokenRepository:
         self.terminos = {}
         self.lista_vacias = []
         pathVacias = options.get('pathVacias', None)
-        tokensEntities = []
 
         # INIT archivos de reglas
         for instancia in self.reglasEntities:
@@ -74,6 +73,7 @@ class TokenRepository:
             documento.terminos = {}
             documento.tokens = []
             content = documento.content
+            tokensEntities = []
             # Aplicamos cada regla definida en self.reglasEntities para entidades
             for instancia in self.reglasEntities:
                 response = instancia.run(content)
@@ -88,6 +88,7 @@ class TokenRepository:
                         archivo.write(termino+'\n')
                     archivo.write('\n')
 
+            
 
             # Aplicamos cada regla definida en self.reglasDocumento para normalizar
             for instancia in self.reglasDocumento:
