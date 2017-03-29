@@ -52,7 +52,6 @@ class TokenRepository:
         self.terminos = {}
         self.lista_vacias = []
         pathVacias = options.get('pathVacias', None)
-        tokensEntities = []
 
         if pathVacias != None :
             print u"ANALIZANDO PALABRAS VACIAS"
@@ -73,6 +72,7 @@ class TokenRepository:
             documento.terminos = {}
             documento.tokens = []
             content = documento.content
+            tokensEntities = []
             # Aplicamos cada regla definida en self.reglasEntities para entidades
             for instancia in self.reglasEntities:
                 response = instancia.run(content)
