@@ -3,6 +3,11 @@
 
 Repositorio de Recuperación de Información
 
+### Ejemplo de uso
+python main.py ~/code/RI-Tratamiento-y-Analisis-del-Texto/demo-data ~/code/RI-Tratamiento-y-Analisis-del-Texto/palabras-vacias.txt
+
+### Ejercicio
+
 Escriba un programa que realice operaciones simples de análisis léxico sobre la colección T12012-gr y calcule medidas básicas sobre la misma. Su programa debe recibir como parámetros el directorio donde se encuentran los documentos y un argumento que indica si se deben eliminar las palabras vacías (y en tal caso, el nombre del archivo que las contiene). 
 Defina, además, una longitud mínima y máxima para los términos. Como salida, el programa debe generar:
 
