@@ -24,7 +24,6 @@ class TokenRepository:
     def __init__(self):
         self.reglasDocumento.append(MinusculasRegla())
         self.reglasDocumento.append(TranslateRegla())
-        self.reglasDocumento.append(LimpiarHtmlTagsRegla())
         self.reglasDocumento.append(LimpiadoBasicoRegla())
         self.reglasTokens.append(MinMaxCaracteresRegla())
 
