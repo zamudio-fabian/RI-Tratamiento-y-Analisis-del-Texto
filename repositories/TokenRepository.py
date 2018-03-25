@@ -30,9 +30,9 @@ class TokenRepository:
     def __init__(self):
         self.reglasEntities.append(EmailRegla())
         self.reglasEntities.append(UrlRegla())
+        self.reglasEntities.append(AbreviaturasRegla())
         self.reglasEntities.append(FechasRegla())
         self.reglasEntities.append(TelefonosRegla())
-        self.reglasEntities.append(AbreviaturasRegla())
         self.reglasEntities.append(NombresPropiosRegla())
         self.reglasEntities.append(NumerosRegla())
         self.reglasDocumento.append(MinusculasRegla())
