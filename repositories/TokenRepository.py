@@ -3,12 +3,10 @@
 # -*- coding: utf-8 -*-
 import codecs
 import sys
-from models.LimpiarHtmlTagsRegla import *
 from models.MinusculasRegla import *
 from models.TranslateRegla import *
 from models.LimpiadoBasicoRegla import *
 from models.MinMaxCaracteresRegla import *
-from models.AbreviaturasRegla import *
 from models.Documento import *
 
 class TokenRepository:
@@ -25,7 +23,6 @@ class TokenRepository:
     def __init__(self):
         self.reglasDocumento.append(MinusculasRegla())
         self.reglasDocumento.append(TranslateRegla())
-        self.reglasDocumento.append(LimpiarHtmlTagsRegla())
         self.reglasDocumento.append(LimpiadoBasicoRegla())
         self.reglasTokens.append(MinMaxCaracteresRegla())
 
