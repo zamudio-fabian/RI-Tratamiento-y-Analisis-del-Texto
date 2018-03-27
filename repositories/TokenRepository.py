@@ -10,7 +10,6 @@ from models.LimpiadoBasicoRegla import *
 from models.MinMaxCaracteresRegla import *
 from models.AbreviaturasRegla import *
 from models.Documento import *
-from nltk.stem.snowball import SpanishStemmer
 
 class TokenRepository:
 
